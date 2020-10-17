@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Яндекс карта</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <div id="map" class="map"></div>
+    </div>
+    <div class="review-list"></div>
+    <div class="form" data-role="review-form">
+        <h3>Отзыв:</h3>
+        <div class="field">
+            <input data-role="review-name" type="text" placeholder="Укажите Ваше имя">
+        </div>
+        <div class="field">
+            <textarea data-role="review-place" type="text" placeholder="Укажите место"></textarea>
+        </div>
+        <div class="field">
+            <textarea data-role="review-text" placeholder="Оставьте отзыв" rows="5"></textarea>
+        </div>
+        <button data-role="review-add">Добавить</button>
+        <span class="form-error"></span>
+    </div>
+    
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+    <script src="main.js"></script>
+</body>
+</html>
