@@ -43,26 +43,28 @@ var clusterer = new ymaps.Clusterer({
 
 myMap.geoObjects.add(clusterer);
 clusterer.add(geoObjects);
+
+function addListeners(myMap) {  // код функции взят из документации Яндекс maps
+  myMap.events.add('click', function (e) {
+    if (!myMap.balloon.isOpen()) {
+        var coords = e.get('coords');
+        myMap.balloon.open(coords, {
+            contentHeader:'Событие!',
+            contentBody:'<p>Кто-то щелкнул по карте.</p>' +
+                '<p>Координаты щелчка: ' + [
+                coords[0].toPrecision(6),
+                coords[1].toPrecision(6)
+                ].join(', ') + '</p>',
+            contentFooter:'<sup>Щелкните еще раз</sup>'
+        });
+    }
+    else {
+        myMap.balloon.close();
+    }
+  })
+  }
+  addListeners(myMap);
 }
 
 ymaps.ready(init);
 
-function addListeners(myMap) {
-myMap.events.add('click', function (e) {
-  if (!myMap.balloon.isOpen()) {
-      var coords = e.get('coords');
-      myMap.balloon.open(coords, {
-          contentHeader:'Событие!',
-          contentBody:'<p>Кто-то щелкнул по карте.</p>' +
-              '<p>Координаты щелчка: ' + [
-              coords[0].toPrecision(6),
-              coords[1].toPrecision(6)
-              ].join(', ') + '</p>',
-          contentFooter:'<sup>Щелкните еще раз</sup>'
-      });
-  }
-  else {
-      myMap.balloon.close();
-  }
-})
-};
