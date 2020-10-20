@@ -49,13 +49,23 @@ function addListeners(myMap) {  // код функции взят из доку�
     if (!myMap.balloon.isOpen()) {
         var coords = e.get('coords');
         myMap.balloon.open(coords, {
-            contentHeader:'Событие!',
-            contentBody:'<p>Кто-то щелкнул по карте.</p>' +
-                '<p>Координаты щелчка: ' + [
-                coords[0].toPrecision(6),
-                coords[1].toPrecision(6)
-                ].join(', ') + '</p>',
-            contentFooter:'<sup>Щелкните еще раз</sup>'
+            contentHeader:'<div class= "header">Событие!</div>',
+            contentBody:
+            '<div class="review-list"></div>' +
+            '<div class="form" data-role="review-form">' +
+              '<div><hr></div>' +
+              '<h3 class="form__title">ВАШ ОТЗЫВ</h3>' +
+              '<div class="field"><input class="field__content" data-role="review-name" type="text" placeholder="Ваше имя" id="myName"></div>' +
+              '<div class="field"><textarea class="field__content" data-role="review-place" type="text" placeholder="Укажите место" id="myPlace"></textarea></div>' +
+              '<div class="field"><textarea class="field__content" data-role="review-text" placeholder="Поделитесь впечатлениями" rows="5" id="myField"></textarea></div>' +
+              '<button class="form__button" data-role="review-add" id="myBtn">Добавить</button>' +
+              '<span class="form-error"></span>' +
+            '</div>'
+                // '<p>Координаты щелчка: ' + [
+                // coords[0].toPrecision(6),
+                // coords[1].toPrecision(6)
+                // ].join(', ') + '</p>',
+            //contentFooter:'<sup>Щелкните еще раз</sup>'
         });
     }
     else {
@@ -68,3 +78,17 @@ function addListeners(myMap) {  // код функции взят из доку�
 
 ymaps.ready(init);
 
+const myName = document.querySelector("#myName");
+const myPlace = document.querySelector("#myPlace");
+const myField = document.querySelector("#myField");
+
+const myBtn = document.querySelector("#myBtn");
+
+let storage = localStorage; 
+myBtn.addEventListener('click', function() {
+            storage.data = JSON.stringify ({
+                myName: myName.value,
+                myPlace: myPlace.value,
+                myField: myField.value
+            });
+        });
