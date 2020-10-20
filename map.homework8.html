@@ -4,29 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Яндекс карта</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+.body {
+    overflow: hidden;
+}
+
+.map {
+    width: 100vw;
+    height: 100vh;
+}
+
+.header {
+    color: #fff;
+    background: #ff8663;
+}
+.form__title {
+    color: #ff8663;
+}
+
+.form__button {
+    background: #ff8663;
+    color: #fff;
+    border-radius: 8px;
+    border:none;
+    padding: 3px 8px;
+    cursor: pointer;
+}
+
+.review-list {
+    height: 100px;
+}
+
+.field__content {
+    width: 90%;
+    border: 1px solid grey;
+    border-radius: 10px;
+}
+
+
+    </style>
 </head>
 <body>
     <div class="wrapper">
         <div id="map" class="map"></div>
     </div>
-    <div class="review-list"></div>
+    <!-- <div class="review-list"></div>
     <div class="form" data-role="review-form">
         <h3>Отзыв:</h3>
         <div class="field">
-            <input data-role="review-name" type="text" placeholder="Укажите Ваше имя">
+            <input data-role="review-name" type="text" placeholder="Ваше имя">
         </div>
         <div class="field">
             <textarea data-role="review-place" type="text" placeholder="Укажите место"></textarea>
         </div>
         <div class="field">
-            <textarea data-role="review-text" placeholder="Оставьте отзыв" rows="5"></textarea>
+            <textarea data-role="review-text" placeholder="Поделитесь впечатлениями" rows="5"></textarea>
         </div>
         <button data-role="review-add">Добавить</button>
         <span class="form-error"></span>
-    </div>
+    </div> -->
     
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU"></script>
+    <script src="https://api-maps.yandex.ru/2.1/?apikey=bbfaed15-7a2f-40fd-957d-b9cee6ba6809&lang=ru_RU" type="text/javascript"></script>
     <script src="main.js"></script>
 </body>
 </html>
