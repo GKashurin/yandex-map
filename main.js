@@ -1,3 +1,4 @@
+
 var placemarks = [
   {
     latitude: 56.833,
@@ -25,6 +26,8 @@ const init = () => {
     behaviors: ['drag'] // чтобы карта не зумилась при прокрутке. drag - возможность перетаскивать карту левой кнопкой мыши
 });
 
+const reviews = document.querySelector(".form");
+
 for (var i = 0; i<placemarks.length; i++) {
   geoObjects[i] = new ymaps.Placemark([placemarks[i].latitude, placemarks[i].longitude], {  //создание метки, добавление координат
       hintContent: placemarks[i].hintContent,
@@ -45,28 +48,24 @@ myMap.geoObjects.add(clusterer);
 clusterer.add(geoObjects);
 
 function addListeners(myMap) {  // код функции взят из документации Яндекс maps
-  myMap.events.add('click', function (e) {
+  myMap.events.add('click', async function (e) {
     if (!myMap.balloon.isOpen()) {
         var coords = e.get('coords');
-        myMap.balloon.open(coords, {
-            contentHeader:'<div class= "header">Событие!</div>',
-            contentBody:
-            '<div class="review-list"></div>' +
-            '<div class="form" data-role="review-form">' +
-              '<div><hr></div>' +
-              '<h3 class="form__title">ВАШ ОТЗЫВ</h3>' +
-              '<div class="field"><input class="field__content" data-role="review-name" type="text" placeholder="Ваше имя" id="myName"></div>' +
-              '<div class="field"><textarea class="field__content" data-role="review-place" type="text" placeholder="Укажите место" id="myPlace"></textarea></div>' +
-              '<div class="field"><textarea class="field__content" data-role="review-text" placeholder="Поделитесь впечатлениями" rows="5" id="myField"></textarea></div>' +
-              '<button class="form__button" data-role="review-add" id="myBtn">Добавить</button>' +
-              '<span class="form-error"></span>' +
-            '</div>'
-                // '<p>Координаты щелчка: ' + [
-                // coords[0].toPrecision(6),
-                // coords[1].toPrecision(6)
-                // ].join(', ') + '</p>',
-            //contentFooter:'<sup>Щелкните еще раз</sup>'
-        });
+        const posX = event.clientX;
+        const posY = event.clientY;
+
+        console.log(posX);
+        console.log(posY);
+        console.log(coords);
+        
+        async function geocoder(coords) {
+          var response = await ymaps.geocode(coords);
+          return response.geoObjects.get(0).getAddressLine();
+      }
+      var address = await geocoder(coords); //распарписли координаты и получили адрес
+
+      showform(coords, address);
+      
     }
     else {
         myMap.balloon.close();
@@ -74,21 +73,49 @@ function addListeners(myMap) {  // код функции взят из доку�
   })
   }
   addListeners(myMap);
+  
 }
 
 ymaps.ready(init);
 
+const title = document.querySelector(".title");
+
+const reviews = document.querySelector(".form-wrapper");
 const myName = document.querySelector("#myName");
 const myPlace = document.querySelector("#myPlace");
 const myField = document.querySelector("#myField");
 
-const myBtn = document.querySelector("#myBtn");
+const myBtn = document.querySelector(".formBtn")
+const reviewList = document.querySelector(".review-list")
 
-let storage = localStorage; 
-myBtn.addEventListener('click', function() {
-            storage.data = JSON.stringify ({
-                myName: myName.value,
-                myPlace: myPlace.value,
-                myField: myField.value
-            });
-        });
+
+function showform(coords, address) {
+  title.textContent = address;
+  reviews.style.display = "block";
+  myBtn.addEventListener('click', function() {
+
+    let addNewReviewName = document.createElement('li')
+    addNewReviewName.innerHTML = myName.value
+    reviewList.appendChild(addNewReviewName)
+    myName.value = '';
+
+    let addNewReviewPlace = document.createElement('li')
+    addNewReviewPlace.innerHTML = myPlace.value
+    reviewList.appendChild(addNewReviewPlace)
+    myPlace.value = '';
+
+    let addNewReviewText = document.createElement('li')
+    addNewReviewText.innerHTML = myField.value
+    reviewList.appendChild(addNewReviewText)
+    myField.value = '';
+  })
+  
+}
+
+
+// валидация формы
+// const form = document.querySelector('.form');
+// form.addEventListener('submit', function(event) {
+//   event.preventDefault()
+//   console.log('click');
+// })
