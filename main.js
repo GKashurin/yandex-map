@@ -26,7 +26,7 @@ const init = () => {
     behaviors: ['drag'] // чтобы карта не зумилась при прокрутке. drag - возможность перетаскивать карту левой кнопкой мыши
 });
 
-const reviews = document.querySelector(".form");
+const reviews = document.querySelector(".form-wrapper");
 
 for (var i = 0; i<placemarks.length; i++) {
   geoObjects[i] = new ymaps.Placemark([placemarks[i].latitude, placemarks[i].longitude], {  //создание метки, добавление координат
@@ -54,10 +54,10 @@ function addListeners(myMap) {  // код функции взят из доку�
         const posX = event.clientX;
         const posY = event.clientY;
 
-        console.log(posX);
-        console.log(posY);
-        console.log(coords);
-        
+        reviews.style.position = 'absolute'; //чтоб окно открывалось на месте клика
+        reviews.style.top = posY + 'px';
+        reviews.style.left = posX + 'px';
+
         async function geocoder(coords) {
           var response = await ymaps.geocode(coords);
           return response.geoObjects.get(0).getAddressLine();
@@ -65,7 +65,7 @@ function addListeners(myMap) {  // код функции взят из доку�
       var address = await geocoder(coords); //распарписли координаты и получили адрес
 
       showform(coords, address);
-      
+
     }
     else {
         myMap.balloon.close();
@@ -92,6 +92,7 @@ const reviewList = document.querySelector(".review-list")
 function showform(coords, address) {
   title.textContent = address;
   reviews.style.display = "block";
+  
   myBtn.addEventListener('click', function() {
 
     let addNewReviewName = document.createElement('li')
@@ -109,13 +110,45 @@ function showform(coords, address) {
     reviewList.appendChild(addNewReviewText)
     myField.value = '';
   })
-  
+
+//   let marker = [
+//     {
+//       Address: address,
+//       Name: myName.value,
+//       Place: myPlace.value,
+//       Comment: myField.value,
+//     }
+//   ]
+// console.log(marker)
+
 }
 
+(function() {
+    let inp = document.querySelectorAll('.field__input'),
+    massive = [];
 
-// валидация формы
-// const form = document.querySelector('.form');
-// form.addEventListener('submit', function(event) {
-//   event.preventDefault()
-//   console.log('click');
-// })
+  function save() {
+    for (var i = 0; i < inp.length; i++) {
+      massive[i] = inp[i].value;
+    }
+    console.log(massive);
+  }
+  save();
+})();
+
+
+  const close = document.querySelector(".close");  //закрытие крестиком
+  close.addEventListener('click', event => {
+    event.preventDefault();
+    reviews.style.display = "none";
+  })
+
+  
+
+// var arr = {}
+//   function saveCoordinate(coords, arr) {
+//   arr.push({x: posX, y: posY});
+//   return arr;
+// }
+// console.log(arr);
+

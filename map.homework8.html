@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Яндекс карта</title>
     <style>
-
 .body {
     overflow: hidden;
 }
+
+.wrapper {
+    position: relative;
+}
+
 ul {
     list-style: none;
+    padding-inline-start: 10px;
 }
 
 .map {
@@ -18,12 +23,20 @@ ul {
     height: 100vh;
 }
 
-.header {
-    color: #fff;
+.title {
     background: #ff8663;
+    color: #fff;
+    padding: 2%;
+    margin-top: -20px;
 }
-.form__title {
+
+.form {
+    margin-bottom: 10px;
+}
+
+.form-title {
     color: #ff8663;
+    padding-left: 7%;
 }
 
 .formBtn {
@@ -33,23 +46,36 @@ ul {
     border:none;
     padding: 3px 8px;
     cursor: pointer;
+    margin-left: 100px;
 }
 
 .review-list {
-    height: 100px;
+    height: 70px;
+    width: 90%;
 }
 
 .form-wrapper {
     display: none;
     width: 200px;
+    position: absolute;
+    background: #fff;
+}
+.field {
+    padding: 0 5%;
+    margin-bottom: 5px;
 }
 
-.field__content {
-    width: 90%;
+.field__input {
+    width: 160px;
+    border-radius: 6px;
     border: 1px solid grey;
-    border-radius: 10px;
 }
-
+.close {
+    margin-left: 184px;
+    z-index: 5;
+    text-decoration: none;
+    color:#fff
+}
 
     </style>
 </head>
@@ -58,22 +84,25 @@ ul {
         <div id="map" class="map"></div>
     </div>
     <div class="form-wrapper">
-    <ul class="review-list"></ul>
-    <div class="title"></div>
-    <div class="form" data-role="review-form">
-        <h3>Отзыв:</h3>
-        <div class="field">
-            <input  id="myName" data-role="review-name" type="text" placeholder="Ваше имя">
+        <a class="close" href="#">
+            <img src="close.png" alt="">
+        </a>
+        <div class="title"></div>
+        <ul class="review-list"></ul>
+        <div class="form" data-role="review-form">
+            <h3 class="form-title">Ваш отзыв:</h3>
+            <div class="field">
+                <input  id="myName" class="field__input" data-role="review-name" type="text" placeholder="Ваше имя">
+            </div>
+            <div class="field">
+                <textarea id="myPlace" class="field__input" data-role="review-place" type="text" placeholder="Укажите место"></textarea>
+            </div>
+            <div class="field">
+                <textarea id="myField" class="field__input" data-role="review-text" placeholder="Поделитесь впечатлениями" rows="5"></textarea>
+            </div>
+            <button class="formBtn" data-role="review-add">Добавить</button>
+            <span class="form-error"></span>
         </div>
-        <div class="field">
-            <textarea id="myPlace" data-role="review-place" type="text" placeholder="Укажите место"></textarea>
-        </div>
-        <div class="field">
-            <textarea id="myField" data-role="review-text" placeholder="Поделитесь впечатлениями" rows="5"></textarea>
-        </div>
-        <button class="formBtn" data-role="review-add">Добавить</button>
-        <span class="form-error"></span>
-    </div>
     </div>
     <script src="https://api-maps.yandex.ru/2.1/?apikey=bbfaed15-7a2f-40fd-957d-b9cee6ba6809&lang=ru_RU" type="text/javascript"></script>
     <script src="main.js"></script>
