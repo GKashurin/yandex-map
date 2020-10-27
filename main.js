@@ -87,15 +87,16 @@ const myField = document.querySelector("#myField");
 
 const myBtn = document.querySelector(".formBtn")
 const reviewList = document.querySelector(".review-list")
-
+const storage = localStorage;
 
 function showform(coords, address) {
   title.textContent = address;
   reviews.style.display = "block";
   
   myBtn.addEventListener('click', function() {
+    getValue();
 
-    let addNewReviewName = document.createElement('li')
+    let addNewReviewName = document.createElement('li') //здесб создаются элементы и добавляются в них текст отзыва
     addNewReviewName.innerHTML = myName.value
     reviewList.appendChild(addNewReviewName)
     myName.value = '';
@@ -109,46 +110,37 @@ function showform(coords, address) {
     addNewReviewText.innerHTML = myField.value
     reviewList.appendChild(addNewReviewText)
     myField.value = '';
-  })
-
-//   let marker = [
-//     {
-//       Address: address,
-//       Name: myName.value,
-//       Place: myPlace.value,
-//       Comment: myField.value,
-//     }
-//   ]
-// console.log(marker)
-
+  });
 }
 
-(function() {
-    let inp = document.querySelectorAll('.field__input'),
-    massive = [];
+function getValue() { //эта функция создает массив из input.value. Вызывается она по клику(стр 97)
+  let inp = document.querySelectorAll('.field__input'),
+   massive = [];
 
   function save() {
     for (var i = 0; i < inp.length; i++) {
       massive[i] = inp[i].value;
     }
-    console.log(massive);
   }
   save();
-})();
+  localStorage.setItem("massive", JSON.stringify(massive)); // данные сохраняются в localStorage
+}
 
 
-  const close = document.querySelector(".close");  //закрытие крестиком
-  close.addEventListener('click', event => {
-    event.preventDefault();
-    reviews.style.display = "none";
-  })
 
+
+const close = document.querySelector(".close");  //закрытие крестиком
+close.addEventListener('click', event => {
+  event.preventDefault();
+  reviews.style.display = "none";
+})
+
+  // function createPlacemark(coords) {
+  //   const placemark = new ymaps.Placemark(coords);
+  //   placemark.events.add('click', (e) => {
+  //     const coords = e.get('target').geometry.getCoordinates();
+  //     this.onClick(coords);
+  //   });
+  //   this.clusterer.add(placemark);
+  // }
   
-
-// var arr = {}
-//   function saveCoordinate(coords, arr) {
-//   arr.push({x: posX, y: posY});
-//   return arr;
-// }
-// console.log(arr);
-
