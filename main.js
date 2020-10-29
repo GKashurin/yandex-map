@@ -1,18 +1,18 @@
 
-var placemarks = [
-  {
-    latitude: 56.833,
-    longitude: 60.5445,
-    hintContent: 'Это хинт',
-    balloonContent: 'Это балун'
-  },
-  {
-    latitude: 56.842,
-    longitude: 60.584,
-    hintContent: 'Это хинт',
-    balloonContent: 'Это балун'
-  }
-],
+// var placemarks = [
+//   {
+//     latitude: 56.833,
+//     longitude: 60.5445,
+//     hintContent: 'Это хинт',
+//     balloonContent: 'Это балун'
+//   },
+//   {
+//     latitude: 56.842,
+//     longitude: 60.584,
+//     hintContent: 'Это хинт',
+//     balloonContent: 'Это балун'
+//   }
+// ],
 
 geoObjects = [];
 
@@ -88,13 +88,16 @@ const myField = document.querySelector("#myField");
 const myBtn = document.querySelector(".formBtn")
 const reviewList = document.querySelector(".review-list")
 const storage = localStorage;
+let reviewsData = [];
+
 
 function showform(coords, address) {
   title.textContent = address;
   reviews.style.display = "block";
   
   myBtn.addEventListener('click', function() {
-    getValue();
+    getValue(coords);
+    console.log(reviewsData);
 
     let addNewReviewName = document.createElement('li') //здесб создаются элементы и добавляются в них текст отзыва
     addNewReviewName.innerHTML = myName.value
@@ -113,17 +116,32 @@ function showform(coords, address) {
   });
 }
 
-function getValue() { //эта функция создает массив из input.value. Вызывается она по клику(стр 97)
-  let inp = document.querySelectorAll('.field__input'),
-   massive = [];
 
-  function save() {
-    for (var i = 0; i < inp.length; i++) {
-      massive[i] = inp[i].value;
+
+function getValue(coords) { //эта функция создает массив из input.value. Вызывается она по клику(стр 97)
+  let nameInput = document.querySelector('.field__input-name');
+  let placeInput = document.querySelector('.field__input-place');
+  let textInput = document.querySelector('.field__input-text');
+ 
+  let obj = {
+    coords: [],
+    review: {
+      name: "",
+      place: "",
+      text: ""
     }
-  }
-  save();
-  localStorage.setItem("massive", JSON.stringify(massive)); // данные сохраняются в localStorage
+  };
+
+obj.review.name = nameInput.value;
+obj.review.place = placeInput.value;
+obj.review.text = textInput.value;
+obj.coords = coords;
+
+reviewsData.push(obj)
+
+console.log(coords)  
+
+  //localStorage.setItem("massive", JSON.stringify(massive)); // данные сохраняются в localStorage
 }
 
 
@@ -135,12 +153,13 @@ close.addEventListener('click', event => {
   reviews.style.display = "none";
 })
 
-  // function createPlacemark(coords) {
-  //   const placemark = new ymaps.Placemark(coords);
+  function createPlacemark(coords) {
+    const placemark = new ymaps.Placemark(coords);
   //   placemark.events.add('click', (e) => {
   //     const coords = e.get('target').geometry.getCoordinates();
   //     this.onClick(coords);
   //   });
   //   this.clusterer.add(placemark);
-  // }
-  
+  }
+  createPlacemark([56.833, 60.5445]);
+  //записать в localhost
