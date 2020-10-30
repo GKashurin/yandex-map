@@ -1,20 +1,5 @@
-
-// var placemarks = [
-//   {
-//     latitude: 56.833,
-//     longitude: 60.5445,
-//     hintContent: 'Это хинт',
-//     balloonContent: 'Это балун'
-//   },
-//   {
-//     latitude: 56.842,
-//     longitude: 60.584,
-//     hintContent: 'Это хинт',
-//     balloonContent: 'Это балун'
-//   }
-// ],
-
-geoObjects = [];
+var geoObjects = [];
+const placemarks = []; // Собираем сюда все метки
 
 let myMap;
 
@@ -38,7 +23,7 @@ for (var i = 0; i<placemarks.length; i++) {
       iconImageHref: "marker.png",
       iconImageSize: [27, 40]
   });
-};
+}
 
 var clusterer = new ymaps.Clusterer({
 
@@ -66,6 +51,27 @@ function addListeners(myMap) {  // код функции взят из доку�
 
       showform(coords, address);
 
+      const newPlacemark = new ymaps.Placemark(
+        coords,
+        {
+          balloonContentHeader: 'dasd',
+          balloonContentBody: '' // Тело для балуна
+        },
+        {
+          iconLayout: 'default#image',
+          draggable: false,
+          openBalloonOnClick: false
+        }
+      );
+
+      // добавление метки на карту
+      myMap.geoObjects.add(newPlacemark);
+      clusterer.add(newPlacemark);
+      placemarks.push(newPlacemark);
+
+      newPlacemark.events.add("click", () => {
+        openBalloon();
+      });
     }
     else {
         myMap.balloon.close();
@@ -73,7 +79,6 @@ function addListeners(myMap) {  // код функции взят из доку�
   })
   }
   addListeners(myMap);
-  
 }
 
 ymaps.ready(init);
@@ -116,8 +121,6 @@ function showform(coords, address) {
   });
 }
 
-
-
 function getValue(coords) { //эта функция создает массив из input.value. Вызывается она по клику(стр 97)
   let nameInput = document.querySelector('.field__input-name');
   let placeInput = document.querySelector('.field__input-place');
@@ -132,20 +135,14 @@ function getValue(coords) { //эта функция создает массив 
     }
   };
 
-obj.review.name = nameInput.value;
-obj.review.place = placeInput.value;
-obj.review.text = textInput.value;
-obj.coords = coords;
+  obj.review.name = nameInput.value;
+  obj.review.place = placeInput.value;
+  obj.review.text = textInput.value;
+  obj.coords = coords;
 
-reviewsData.push(obj)
-
-console.log(coords)  
-
+  reviewsData.push(obj);
   //localStorage.setItem("massive", JSON.stringify(massive)); // данные сохраняются в localStorage
 }
-
-
-
 
 const close = document.querySelector(".close");  //закрытие крестиком
 close.addEventListener('click', event => {
@@ -153,13 +150,8 @@ close.addEventListener('click', event => {
   reviews.style.display = "none";
 })
 
-  function createPlacemark(coords) {
-    const placemark = new ymaps.Placemark(coords);
-  //   placemark.events.add('click', (e) => {
-  //     const coords = e.get('target').geometry.getCoordinates();
-  //     this.onClick(coords);
-  //   });
-  //   this.clusterer.add(placemark);
-  }
-  createPlacemark([56.833, 60.5445]);
-  //записать в localhost
+const openBalloon = () => {
+  console.log('Вот тут событие клика по марке. В эту функцию тебе нужно записать открытие формы с отзывами на этой метке.')
+};
+
+// Задание: при клике на метку найди в объекте с нашими отзывами все отзывы, которые соответствуют данной метке. И отобрази их. И все
