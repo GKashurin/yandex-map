@@ -79,6 +79,14 @@ function addListeners(myMap) {  // код функции взят из доку�
   })
   }
   addListeners(myMap);
+
+  //функцию загрузки данных вызываем при инициализации карты, чтобы загрузить данные о всех отзывах, ранее созданных, в локалсторедж:
+  let markers = loadFromStorage();
+  if (markers) {
+    markers.forEach((marker) => {
+      console.log('marker: ', marker);
+    });
+  }
 }
 
 ymaps.ready(init);
@@ -118,6 +126,7 @@ function showform(coords, address) {
     addNewReviewText.innerHTML = myField.value
     reviewList.appendChild(addNewReviewText)
     myField.value = '';
+    reviews.style.display = "none";
   });
 }
 
@@ -141,7 +150,7 @@ function getValue(coords) { //эта функция создает массив 
   obj.coords = coords;
 
   reviewsData.push(obj);
-  //localStorage.setItem("massive", JSON.stringify(massive)); // данные сохраняются в localStorage
+  addToStorage(obj); //вызываем создание данных об отзыве в локалсторедж в тот момент, когда создаем объект из данных полей
 }
 
 const close = document.querySelector(".close");  //закрытие крестиком
@@ -151,7 +160,20 @@ close.addEventListener('click', event => {
 })
 
 const openBalloon = () => {
-  console.log('Вот тут событие клика по марке. В эту функцию тебе нужно записать открытие формы с отзывами на этой метке.')
+  reviews.style.display = "block";
 };
 
-// Задание: при клике на метку найди в объекте с нашими отзывами все отзывы, которые соответствуют данной метке. И отобрази их. И все
+function addToStorage(obj) {
+  let markers = [];
+  if (localStorage.getItem('markers')) {
+      markers = JSON.parse(localStorage.getItem('markers'));
+  }
+  markers.push(reviewsData);
+  localStorage.setItem('markers', JSON.stringify(markers));
+}
+
+function loadFromStorage() {
+  if (localStorage.getItem('markers')) {
+      return JSON.parse(localStorage.getItem('markers'));
+  }
+}
